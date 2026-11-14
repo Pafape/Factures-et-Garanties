@@ -1,0 +1,1026 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Garanties</title>
+
+<!-- Installation sur l'écran d'accueil (iPhone / Android) -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Garanties">
+<meta name="application-name" content="Garanties">
+<meta name="theme-color" content="#F4F0E6">
+<meta name="format-detection" content="telephone=no">
+<link rel="apple-touch-icon" id="apple-icon" href="apple-touch-icon.png">
+<link rel="icon" id="fav-icon" href="icone-garanties-192.png">
+<link rel="manifest" id="manifest-link" href="">
+<script>
+  // Génère l'icône de l'application (PNG 180x180) et le manifeste directement dans le navigateur,
+  // pour que le fichier reste unique et autonome.
+  (function () {
+    try {
+      var size = 180;
+      var c = document.createElement('canvas');
+      c.width = size; c.height = size;
+      var x = c.getContext('2d');
+      x.fillStyle = '#33503E';
+      x.fillRect(0, 0, size, size);
+      // bouclier
+      x.fillStyle = '#F4F0E6';
+      x.beginPath();
+      x.moveTo(90, 28);
+      x.lineTo(142, 46);
+      x.lineTo(142, 92);
+      x.quadraticCurveTo(142, 128, 90, 152);
+      x.quadraticCurveTo(38, 128, 38, 92);
+      x.lineTo(38, 46);
+      x.closePath();
+      x.fill();
+      // coche
+      x.strokeStyle = '#33503E';
+      x.lineWidth = 12;
+      x.lineCap = 'round';
+      x.lineJoin = 'round';
+      x.beginPath();
+      x.moveTo(66, 88);
+      x.lineTo(84, 106);
+      x.lineTo(116, 70);
+      x.stroke();
+      var png = c.toDataURL('image/png');
+      // Si les fichiers d'icônes ne sont pas déposés à côté de index.html, on utilise l'icône générée.
+      var probe = new Image();
+      probe.onerror = function () {
+        document.getElementById('apple-icon').href = png;
+        document.getElementById('fav-icon').href = png;
+      };
+      probe.src = 'apple-touch-icon.png';
+
+      var manifest = {
+        name: 'Garanties',
+        short_name: 'Garanties',
+        description: 'Suivi des garanties produits',
+        start_url: location.href.split('#')[0],
+        display: 'standalone',
+        background_color: '#F4F0E6',
+        theme_color: '#33503E',
+        lang: 'fr',
+        icons: [{ src: png, sizes: '180x180', type: 'image/png' }]
+      };
+      var blob = new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' });
+      document.getElementById('manifest-link').href = URL.createObjectURL(blob);
+    } catch (e) { console.warn('Icône indisponible :', e); }
+  })();
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F4F0E6;
+    --paper-line: #E2D8C3;
+    --card: #FBF9F3;
+    --ink: #2A251E;
+    --muted: #8A8071;
+    --green: #33503E;
+    --green-dark: #223226;
+    --kraft: #B99A5B;
+    --amber: #B0701F;
+    --amber-bg: #FBF0DE;
+    --red: #A23F3B;
+    --red-bg: #F8E9E6;
+    --ok-bg: #EAF0EB;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--paper); }
+  #app {
+    font-family: 'Public Sans', sans-serif;
+    color: var(--ink);
+    background:
+      linear-gradient(var(--paper-line) 1px, transparent 1px) 0 38px / 100% 38px;
+    background-color: var(--paper);
+    min-height: 100vh;
+    padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px));
+  }
+  .header { padding: calc(26px + env(safe-area-inset-top, 0px)) 20px 0; border-bottom: 3px solid var(--green); background: var(--paper); }
+  .header h1 { font-family: 'Fraunces', serif; font-weight: 600; font-size: 28px; margin: 0 0 4px; letter-spacing: -0.01em; }
+  .header p { margin: 0 0 16px; color: var(--muted); font-size: 13.5px; }
+  .container { max-width: 680px; margin: 0 auto; padding: 0 16px; }
+
+  .tabs { display: flex; gap: 4px; }
+  .tab {
+    font-family: 'Public Sans', sans-serif; font-weight: 600; font-size: 14px;
+    padding: 10px 14px; border: none; background: none; color: var(--muted);
+    cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -3px;
+  }
+  .tab.active { color: var(--green); border-bottom-color: var(--green); }
+
+  .toolbar { display: flex; gap: 10px; margin: 18px 0 8px; }
+  .btn {
+    font-family: 'Public Sans', sans-serif; font-weight: 600; font-size: 14.5px;
+    border: none; border-radius: 3px; padding: 11px 16px; cursor: pointer;
+  }
+  .btn-primary { background: var(--green); color: #fff; }
+  .btn-primary:hover { background: var(--green-dark); }
+  .btn-primary:disabled { opacity: .6; cursor: default; }
+  .btn-ghost { background: transparent; color: var(--green); border: 1.5px solid var(--green); }
+  .btn-text { background: none; color: var(--muted); text-decoration: underline; padding: 6px 0; font-size: 13.5px; cursor: pointer; border: none; }
+  .btn-danger-text { background: none; color: var(--red); text-decoration: underline; padding: 6px 0; font-size: 13.5px; cursor: pointer; border: none; }
+  .btn-edit-text { background: none; color: var(--green); font-weight: 600; text-decoration: underline; padding: 6px 0; font-size: 13.5px; cursor: pointer; border: none; font-family: 'Public Sans', sans-serif; }
+
+  .search-bar { display: flex; gap: 8px; margin: 6px 0 14px; flex-wrap: wrap; }
+  .search-bar input[type=text] { flex: 1; min-width: 160px; }
+  .search-bar select { padding: 10px 8px; border: 1px solid var(--paper-line); border-radius: 4px; background: var(--card); color: var(--ink); font-size: 14px; font-family: 'Public Sans', sans-serif; }
+
+  .empty { text-align: center; padding: 60px 20px; color: var(--muted); }
+  .empty .big { font-family: 'Fraunces', serif; font-size: 20px; color: var(--ink); margin-bottom: 6px; }
+
+  .card { display: flex; background: var(--card); border: 1px solid var(--paper-line); border-radius: 2px; margin-bottom: 12px; overflow: hidden; cursor: pointer; box-shadow: 0 1px 0 rgba(0,0,0,0.03); }
+  .card-stripe { width: 7px; flex-shrink: 0; }
+  .stripe-ok { background: var(--green); }
+  .stripe-soon { background: var(--amber); }
+  .stripe-expired { background: var(--red); }
+  .card-body { padding: 14px 16px; flex: 1; min-width: 0; }
+  .card-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+  .card-name { font-family: 'Fraunces', serif; font-weight: 600; font-size: 17px; }
+  .card-seller { color: var(--muted); font-size: 13px; margin-top: 2px; }
+  .status-pill { font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 20px; white-space: nowrap; }
+  .status-ok { background: var(--ok-bg); color: var(--green); }
+  .status-soon { background: var(--amber-bg); color: var(--amber); }
+  .status-expired { background: var(--red-bg); color: var(--red); }
+  .card-meta { font-size: 13px; color: var(--muted); margin-top: 8px; }
+  .card-tag { display: inline-block; font-size: 11.5px; background: #EFE9DA; color: var(--kraft); border-radius: 3px; padding: 2px 7px; margin-top: 6px; font-weight: 600; }
+  .card-actions { display: flex; gap: 16px; align-items: center; }
+
+  .overlay { position: fixed; inset: 0; background: rgba(30,26,20,0.4); display: flex; align-items: flex-end; justify-content: center; z-index: 50; }
+  .sheet { background: var(--paper); width: 100%; max-width: 680px; max-height: 92vh; overflow-y: auto; -webkit-overflow-scrolling: touch; border-radius: 10px 10px 0 0; padding: 22px 20px calc(30px + env(safe-area-inset-bottom, 0px)); border-top: 4px solid var(--green); }
+  .sheet h2 { font-family: 'Fraunces', serif; font-size: 22px; margin: 0 0 18px; }
+  label { display: block; font-size: 13px; font-weight: 600; color: var(--muted); margin: 16px 0 6px; }
+  label:first-of-type { margin-top: 0; }
+  /* 16px minimum : évite le zoom automatique d'iOS quand on touche un champ */
+  input[type=text], input[type=date], input[type=number], input[type=email], input[type=tel], textarea, select.full {
+    width: 100%; padding: 10px 11px; border: 1px solid var(--paper-line); border-radius: 4px;
+    font-family: 'Public Sans', sans-serif; font-size: 16px; background: var(--card); color: var(--ink);
+  }
+  .search-bar select { font-size: 16px; }
+  textarea { resize: vertical; min-height: 60px; }
+  .presets { display: flex; gap: 8px; margin-top: 8px; }
+  .preset-btn { border: 1px solid var(--paper-line); background: var(--card); border-radius: 20px; padding: 5px 13px; font-size: 13px; cursor: pointer; color: var(--ink); }
+  .preset-btn.active { background: var(--green); color: #fff; border-color: var(--green); }
+  .toggle-group { display: flex; gap: 8px; }
+  .toggle-btn { flex: 1; padding: 10px 6px; border: 1.5px solid var(--paper-line); background: var(--card); border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 13px; color: var(--muted); }
+  .toggle-btn.active-yes { background: var(--ok-bg); border-color: var(--green); color: var(--green); }
+  .toggle-btn.active-no { background: #EFECE4; border-color: var(--kraft); color: var(--ink); }
+  .info-box { background: var(--amber-bg); border-left: 3px solid var(--amber); padding: 12px 14px; border-radius: 3px; font-size: 13.5px; line-height: 1.5; margin-top: 10px; color: #5C3E14; }
+  .info-box strong { color: var(--amber); }
+  .info-box.neutral { background: var(--ok-bg); border-left-color: var(--green); color: #1E3128; }
+  .info-box.neutral strong { color: var(--green); }
+  .invoice-zone { border: 1.5px dashed var(--paper-line); border-radius: 6px; padding: 14px; text-align: center; margin-top: 6px; background: var(--card); }
+  .invoice-preview { max-width: 100%; max-height: 160px; border-radius: 4px; display: block; margin: 0 auto 10px; }
+  .file-label { display: inline-block; background: var(--green); color: #fff; padding: 8px 14px; border-radius: 4px; font-size: 13.5px; font-weight: 600; cursor: pointer; }
+  .file-label input { display: none; }
+  .ocr-status { font-size: 13px; color: var(--muted); margin-top: 8px; }
+  .ocr-banner { background: var(--ok-bg); border-left: 3px solid var(--green); padding: 9px 12px; border-radius: 3px; font-size: 13px; margin-top: 10px; color: #1E3128; }
+  .sheet-actions { display: flex; gap: 10px; margin-top: 24px; }
+  .sheet-actions .btn { flex: 1; }
+
+  .detail-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--paper-line); font-size: 14.5px; gap: 10px; }
+  .detail-row .k { color: var(--muted); }
+  .detail-row .v { text-align: right; font-weight: 500; max-width: 60%; }
+  .contact-line { display: flex; align-items: center; gap: 8px; padding: 9px 0; font-size: 14.5px; }
+  .contact-line a { color: var(--green); text-decoration: none; font-weight: 600; }
+  .section-label { font-family: 'Fraunces', serif; font-size: 15px; margin: 20px 0 4px; color: var(--green); }
+
+  .manual h3 { font-family: 'Fraunces', serif; font-size: 18px; color: var(--green); margin: 26px 0 8px; }
+  .manual h3:first-child { margin-top: 6px; }
+  .manual p, .manual li { font-size: 14.5px; line-height: 1.6; }
+  .manual ul { padding-left: 20px; }
+  .manual code { background: #EFE9DA; padding: 1px 5px; border-radius: 3px; font-size: 13px; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.0.4/tesseract.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+  if (window['pdfjsLib']) {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  }
+</script>
+<script type="text/babel">
+const { useState, useEffect, useMemo } = React;
+const APP_VERSION = '2026-11-14-v9 (icônes, écran d\'accueil iPhone, bouton Modifier)';
+const STORAGE_KEY = 'garanties-items-v2';
+
+const MOIS = ['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
+const MOIS_LONG = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+
+function fmtDate(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso + 'T00:00:00');
+  if (isNaN(d)) return '—';
+  return `${d.getDate()} ${MOIS[d.getMonth()]} ${d.getFullYear()}`;
+}
+function addMonths(iso, months) {
+  const d = new Date(iso + 'T00:00:00');
+  d.setMonth(d.getMonth() + Number(months || 0));
+  return d.toISOString().slice(0,10);
+}
+function daysUntil(iso) {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const end = new Date(iso + 'T00:00:00');
+  return Math.round((end - today) / 86400000);
+}
+function statusOf(iso) {
+  const d = daysUntil(iso);
+  if (d < 0) return 'expired';
+  if (d <= 60) return 'soon';
+  return 'ok';
+}
+function statusLabel(iso) {
+  const d = daysUntil(iso);
+  if (d < 0) return `Expirée depuis ${Math.abs(d)} j`;
+  if (d === 0) return `Expire aujourd'hui`;
+  if (d <= 60) return `Expire dans ${d} j`;
+  if (d <= 365) return `Expire dans ${Math.round(d/30)} mois`;
+  return `Expire dans ${(d/365).toFixed(1)} ans`;
+}
+function endDateOf(item) {
+  const months = (item.extensionType && item.extensionType !== 'non' && item.extensionDureeMois) ? item.extensionDureeMois : item.dureeGarantie;
+  return addMonths(item.dateAchat, months);
+}
+
+function compressImage(file, cb) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const img = new Image();
+    img.onload = () => {
+      const maxW = 1000;
+      const scale = Math.min(1, maxW / img.width);
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width * scale;
+      canvas.height = img.height * scale;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      cb(canvas.toDataURL('image/jpeg', 0.75));
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+// Lit un fichier PDF tel quel (pas de compression possible) et le renvoie en data URL.
+function readPdf(file, cb) {
+  const reader = new FileReader();
+  reader.onload = (e) => cb(e.target.result);
+  reader.readAsDataURL(file);
+}
+
+// Ouvre un PDF stocké en data URL dans un nouvel onglet. Les navigateurs modernes (notamment
+// Safari sur iPhone) bloquent silencieusement l'ouverture directe d'une URL "data:" dans un
+// nouvel onglet : on convertit donc le PDF en Blob juste avant de l'ouvrir, ce qui fonctionne
+// de façon fiable partout.
+function openInvoicePdf(dataUrl) {
+  try {
+    const [meta, base64] = dataUrl.split(',');
+    const mimeMatch = meta.match(/data:(.*);base64/);
+    const mime = mimeMatch ? mimeMatch[1] : 'application/pdf';
+    const binary = atob(base64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    const blob = new Blob([bytes], { type: mime });
+    const url = URL.createObjectURL(blob);
+    window.open(url, '_blank');
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
+  } catch (e) {
+    console.warn('Impossible d\'ouvrir ce PDF :', e);
+    alert("Impossible d'ouvrir ce PDF sur cet appareil.");
+  }
+}
+
+// Petit annuaire intégré des enseignes courantes (site officiel uniquement — pas de numéro de
+// téléphone, car ces derniers changent souvent et sont difficiles à garantir exacts dans le temps).
+// Fonctionne entièrement hors-ligne, sans compte ni clé, une fois l'application chargée.
+const VENDOR_DIRECTORY = [
+  { match: ['amazon'], nom: 'Amazon', site: 'https://www.amazon.fr/gp/help/customer/contact-us', pays: 'France' },
+  { match: ['cdiscount'], nom: 'Cdiscount', site: 'https://www.cdiscount.com/', pays: 'France' },
+  { match: ['fnac'], nom: 'Fnac', site: 'https://www.fnac.com/', pays: 'France' },
+  { match: ['darty'], nom: 'Darty', site: 'https://www.darty.com/', pays: 'France' },
+  { match: ['boulanger'], nom: 'Boulanger', site: 'https://www.boulanger.com/', pays: 'France' },
+  { match: ['leroy merlin', 'leroymerlin'], nom: 'Leroy Merlin', site: 'https://www.leroymerlin.fr/', pays: 'France' },
+  { match: ['castorama'], nom: 'Castorama', site: 'https://www.castorama.fr/', pays: 'France' },
+  { match: [' but', 'but.fr', 'magasins but'], nom: 'BUT', site: 'https://www.but.fr/', pays: 'France' },
+  { match: ['conforama'], nom: 'Conforama', site: 'https://www.conforama.fr/', pays: 'France' },
+  { match: ['ikea'], nom: 'Ikea', site: 'https://www.ikea.com/fr/fr/', pays: 'France' },
+  { match: ['electro depot', 'electrodepot'], nom: 'Electro Dépôt', site: 'https://www.electrodepot.fr/', pays: 'France' },
+  { match: ['auchan'], nom: 'Auchan', site: 'https://www.auchan.fr/', pays: 'France' },
+  { match: ['carrefour'], nom: 'Carrefour', site: 'https://www.carrefour.fr/', pays: 'France' },
+  { match: ['leclerc'], nom: 'E.Leclerc', site: 'https://www.e.leclerc/', pays: 'France' },
+  { match: ['decathlon'], nom: 'Decathlon', site: 'https://www.decathlon.fr/', pays: 'France' },
+  { match: ['manomano'], nom: 'ManoMano', site: 'https://www.manomano.fr/', pays: 'France' },
+  { match: ['la redoute', 'laredoute'], nom: 'La Redoute', site: 'https://www.laredoute.fr/', pays: 'France' },
+  { match: ['apple store', 'apple.com', 'applecare'], nom: 'Apple', site: 'https://support.apple.com/fr-fr', pays: 'France' },
+  { match: ['samsung'], nom: 'Samsung', site: 'https://www.samsung.com/fr/support/', pays: 'France' },
+];
+
+function normalizeText(s) {
+  return (s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+function findInDirectory(name) {
+  const q = normalizeText(name);
+  if (!q.trim()) return null;
+  return VENDOR_DIRECTORY.find(v => v.match.some(m => q.includes(normalizeText(m)) || normalizeText(m).includes(q))) || null;
+}
+
+// Extrait le texte d'une image via OCR (Tesseract.js, gratuit, exécuté entièrement dans le navigateur).
+async function ocrImage(dataUrl) {
+  try {
+    const result = await Tesseract.recognize(dataUrl, 'fra');
+    return result.data.text || '';
+  } catch (e) {
+    console.warn('OCR indisponible :', e);
+    return '';
+  }
+}
+
+// Regroupe les fragments de texte d'une page PDF en lignes (par position verticale), afin de
+// pouvoir deviner l'en-tête (souvent le nom du vendeur) et les lignes d'articles.
+function pdfItemsToLines(items) {
+  const rows = {};
+  items.forEach(it => {
+    const y = Math.round(it.transform[5] / 2) * 2;
+    if (!rows[y]) rows[y] = [];
+    rows[y].push(it);
+  });
+  const ys = Object.keys(rows).map(Number).sort((a, b) => b - a);
+  return ys.map(y => rows[y].sort((a, b) => a.transform[4] - b.transform[4]).map(it => it.str).join(' ').trim()).filter(l => l);
+}
+
+async function extractPdfText(dataUrl) {
+  try {
+    const base64 = dataUrl.split(',')[1];
+    const raw = atob(base64);
+    const bytes = new Uint8Array(raw.length);
+    for (let i = 0; i < raw.length; i++) bytes[i] = raw.charCodeAt(i);
+    const doc = await pdfjsLib.getDocument({ data: bytes }).promise;
+    let lines = [];
+    const pageCount = Math.min(doc.numPages, 2);
+    for (let p = 1; p <= pageCount; p++) {
+      const page = await doc.getPage(p);
+      const content = await page.getTextContent();
+      lines = lines.concat(pdfItemsToLines(content.items));
+    }
+    return lines;
+  } catch (e) {
+    console.warn('Lecture du PDF indisponible :', e);
+    return [];
+  }
+}
+
+const MOIS_NOMS = { 'janvier':'01','février':'02','fevrier':'02','mars':'03','avril':'04','mai':'05','juin':'06','juillet':'07','août':'08','aout':'08','septembre':'09','octobre':'10','novembre':'11','décembre':'12','decembre':'12' };
+
+function guessDateFromText(text) {
+  const t = normalizeText(text);
+  let m = t.match(/\b(\d{4})-(\d{2})-(\d{2})\b/);
+  if (m) return `${m[1]}-${m[2]}-${m[3]}`;
+  m = t.match(/\b(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})\b/);
+  if (m) return `${m[3]}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}`;
+  m = t.match(/\b(\d{1,2})\s+(janvier|fevrier|mars|avril|mai|juin|juillet|aout|septembre|octobre|novembre|decembre)\s+(\d{4})\b/);
+  if (m) return `${m[3]}-${MOIS_NOMS[m[2]]}-${m[1].padStart(2,'0')}`;
+  return '';
+}
+
+async function ocrImageLines(dataUrl) {
+  const text = await ocrImage(dataUrl);
+  return text.split('\n').map(l => l.trim()).filter(Boolean);
+}
+
+const NUMERO_FACTURE_PATTERNS = [
+  /facture[s]?\s*n[°ºo]?\s*[:\-]?\s*([A-Za-z0-9][A-Za-z0-9\-\/\.]{2,25})/i,
+  /invoice\s*(?:number|#|n[°o]?)?\s*[:\-]?\s*([A-Za-z0-9][A-Za-z0-9\-\/\.]{2,25})/i,
+  /commande\s*n[°ºo]?\s*[:\-]?\s*([A-Za-z0-9][A-Za-z0-9\-\/\.]{5,25})/i,
+  /r[ée]f[ée]rence\s*[:\-]?\s*([A-Za-z0-9][A-Za-z0-9\-\/\.]{2,25})/i,
+];
+function guessInvoiceNumber(fullText) {
+  for (const re of NUMERO_FACTURE_PATTERNS) {
+    const m = fullText.match(re);
+    if (m) return m[1];
+  }
+  return '';
+}
+
+// Analyse un justificatif (image ou PDF) entièrement en local : OCR/lecture de texte, puis
+// reconnaissance de la date d'achat, d'un éventuel n° de facture, et du vendeur uniquement s'il
+// correspond à une enseigne de l'annuaire intégré. Gratuit, sans compte ni clé. Deux heuristiques
+// plus fragiles (deviner le vendeur depuis la première ligne du document, deviner des produits
+// depuis des lignes "libellé + prix") ont été retirées : leurs résultats étaient trop souvent
+// faux pour être utiles — mieux vaut ne rien proposer que proposer une information incorrecte.
+async function analyzeInvoice(dataUrl, factureType) {
+  const lines = factureType === 'pdf' ? await extractPdfText(dataUrl) : await ocrImageLines(dataUrl);
+  if (!lines.length) return null;
+  const fullText = lines.join('\n');
+  const dateAchat = guessDateFromText(fullText);
+  const numeroFacture = guessInvoiceNumber(fullText);
+  const vendorEntry = VENDOR_DIRECTORY.find(v => v.match.some(m => normalizeText(fullText).includes(normalizeText(m))));
+  const vendeur = vendorEntry ? vendorEntry.nom : '';
+  const paysVendeur = vendorEntry ? vendorEntry.pays : '';
+  return { dateAchat, vendeur, paysVendeur, numeroFacture, produits: [] };
+}
+
+function loadItems() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    const arr = raw ? JSON.parse(raw) : [];
+    return arr.map(it => {
+      if (it.produits) return { ...it, numeroFacture: it.numeroFacture || '' };
+      return {
+        ...it,
+        produits: it.nom ? [{ id: 'p0', nom: it.nom }] : [{ id: 'p0', nom: '' }],
+        numeroFacture: it.numeroFacture || ''
+      };
+    });
+  } catch (e) { return []; }
+}
+
+const emptyForm = {
+  id: null, produits: [{ id: 'p0', nom: '' }], numeroFacture: '', vendeur: '', paysVendeur: 'France', dateAchat: '', dureeGarantie: '24',
+  extensionType: 'non', extensionOrganisme: '', extensionDureeMois: '',
+  extensionTel: '', extensionEmail: '', extensionAutre: '',
+  factureImg: '', factureType: '', factureRef: '',
+  tel: '', email: '', autreContact: '', notes: '', interventions: []
+};
+
+function saveItems(items) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); }
+  catch (e) { console.error('Erreur de sauvegarde locale', e); }
+}
+
+function App() {
+  const [items, setItems] = useState(() => loadItems());
+  const [tab, setTab] = useState('actifs'); // actifs | archives | manuel
+  const [modal, setModal] = useState(null); // { mode: 'form'|'detail', ... }
+  const [form, setForm] = useState(emptyForm);
+  const [saving, setSaving] = useState(false);
+  const [query, setQuery] = useState('');
+  const [fMonth, setFMonth] = useState('');
+  const [fYear, setFYear] = useState('');
+
+  function persist(newItems) { setItems(newItems); saveItems(newItems); }
+
+  function openNew() { setForm(emptyForm); setModal({ mode: 'form' }); }
+  function openEdit(item) { setForm(item); setModal({ mode: 'form' }); }
+  function openDetail(item) { setModal({ mode: 'detail', item }); }
+
+  function saveForm() {
+    if (!(form.produits || []).some(p => p.nom.trim()) || !form.dateAchat || !form.dureeGarantie) return;
+    setSaving(true);
+    const id = form.id || (Date.now() + '-' + Math.random().toString(36).slice(2,7));
+    const record = { ...form, id };
+    const exists = items.some(i => i.id === id);
+    const newItems = exists ? items.map(i => i.id === id ? record : i) : [...items, record];
+    persist(newItems);
+    setSaving(false);
+    setModal({ mode: 'detail', item: record });
+  }
+
+  function deleteItem(id) {
+    persist(items.filter(i => i.id !== id));
+    setModal(null);
+  }
+
+  const years = useMemo(() => {
+    const set = new Set(items.filter(i => i.dateAchat).map(i => i.dateAchat.slice(0,4)));
+    return Array.from(set).sort().reverse();
+  }, [items]);
+
+  const searching = query.trim() !== '' || fMonth !== '' || fYear !== '';
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    let base = items;
+    if (searching) {
+      base = base.filter(i => {
+        const interventionsText = (i.interventions || []).map(r => `${r.probleme} ${r.resultat}`).join(' ');
+        const produitsText = (i.produits || []).map(p => p.nom).join(' ');
+        const matchQ = !q || [produitsText, i.vendeur, i.notes, i.extensionOrganisme, i.numeroFacture, interventionsText].join(' ').toLowerCase().includes(q);
+        const matchMonth = !fMonth || (i.dateAchat && i.dateAchat.slice(5,7) === fMonth);
+        const matchYear = !fYear || (i.dateAchat && i.dateAchat.slice(0,4) === fYear);
+        return matchQ && matchMonth && matchYear;
+      });
+    } else {
+      base = base.filter(i => tab === 'actifs' ? statusOf(endDateOf(i)) !== 'expired' : statusOf(endDateOf(i)) === 'expired');
+    }
+    return [...base].sort((a,b) => endDateOf(a) < endDateOf(b) ? -1 : 1);
+  }, [items, tab, query, fMonth, fYear, searching]);
+
+  const archivedCount = items.filter(i => statusOf(endDateOf(i)) === 'expired').length;
+  const activeCount = items.length - archivedCount;
+
+  return (
+    <div>
+      <div className="header">
+        <div className="container">
+          <h1>Garanties</h1>
+          <p>Factures, durées, extensions et contacts vendeurs, au même endroit</p>
+          <p style={{fontSize: 11, color: 'var(--muted)', marginTop: -12, marginBottom: 12}}>Version {APP_VERSION}</p>
+          <div className="tabs">
+            <button className={`tab ${tab === 'actifs' ? 'active' : ''}`} onClick={() => setTab('actifs')}>Actifs ({activeCount})</button>
+            <button className={`tab ${tab === 'archives' ? 'active' : ''}`} onClick={() => setTab('archives')}>Archivés ({archivedCount})</button>
+            <button className={`tab ${tab === 'manuel' ? 'active' : ''}`} onClick={() => setTab('manuel')}>Mode d'emploi</button>
+          </div>
+        </div>
+      </div>
+
+      <div className="container">
+        {tab !== 'manuel' && (
+          <div>
+            <div className="toolbar">
+              <button className="btn btn-primary" onClick={openNew}>+ Ajouter un produit</button>
+            </div>
+            <div className="search-bar">
+              <input type="text" placeholder="Rechercher un produit, un vendeur, une note…" value={query} onChange={e => setQuery(e.target.value)} />
+              <select value={fMonth} onChange={e => setFMonth(e.target.value)}>
+                <option value="">Tous les mois</option>
+                {MOIS_LONG.map((m, idx) => <option key={m} value={String(idx+1).padStart(2,'0')}>{m}</option>)}
+              </select>
+              <select value={fYear} onChange={e => setFYear(e.target.value)}>
+                <option value="">Toutes les années</option>
+                {years.map(y => <option key={y} value={y}>{y}</option>)}
+              </select>
+            </div>
+
+            {filtered.length === 0 && (
+              <div className="empty">
+                <div className="big">{searching ? 'Aucun résultat' : (tab === 'actifs' ? 'Aucun produit sous garantie' : 'Aucun produit archivé')}</div>
+                <div>{searching ? 'Essaie un autre mot-clé ou une autre période.' : (tab === 'actifs' ? "Ajoute ton premier achat pour ne plus jamais rater une garantie." : "Les produits arrivés en fin de garantie apparaîtront ici automatiquement.")}</div>
+              </div>
+            )}
+
+            {filtered.map(item => {
+              const end = endDateOf(item);
+              const st = statusOf(end);
+              const extLabel = item.extensionType === 'tiers' ? `Extension ${item.extensionOrganisme || 'tiers'}` : (item.extensionType === 'vendeur' ? 'Extension vendeur' : null);
+              const produitsList = item.produits || [];
+              const titre = produitsList[0]?.nom || '(sans nom)';
+              const autresCount = produitsList.length - 1;
+              return (
+                <div key={item.id} className="card" onClick={() => openDetail(item)}>
+                  <div className={`card-stripe stripe-${st === 'ok' ? 'ok' : st === 'soon' ? 'soon' : 'expired'}`}></div>
+                  <div className="card-body">
+                    <div className="card-top">
+                      <div>
+                        <div className="card-name">{titre}{autresCount > 0 && <span style={{color: 'var(--muted)', fontWeight: 500, fontSize: 13.5}}> +{autresCount} autre{autresCount > 1 ? 's' : ''}</span>}</div>
+                        <div className="card-seller">{item.vendeur}</div>
+                      </div>
+                      <span className={`status-pill status-${st === 'ok' ? 'ok' : st === 'soon' ? 'soon' : 'expired'}`}>{statusLabel(end)}</span>
+                    </div>
+                    <div className="card-meta">Acheté le {fmtDate(item.dateAchat)} · garantie jusqu'au {fmtDate(end)}</div>
+                    <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                      {extLabel ? <span className="card-tag">{extLabel}</span> : <span></span>}
+                      <div className="card-actions">
+                        <button className="btn-edit-text" style={{margin: 0}} onClick={(e) => {
+                          e.stopPropagation();
+                          openEdit(item);
+                        }}>Modifier</button>
+                        {st === 'expired' && (
+                          <button className="btn-danger-text" style={{margin: 0}} onClick={(e) => {
+                            e.stopPropagation();
+                            if (window.confirm(`Supprimer définitivement « ${titre} » ? Cette action est irréversible.`)) {
+                              persist(items.filter(i => i.id !== item.id));
+                            }
+                          }}>Supprimer</button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {tab === 'manuel' && <Manuel />}
+      </div>
+
+      {modal && modal.mode === 'form' && (
+        <FormSheet form={form} setForm={setForm} onCancel={() => setModal(null)} onSave={saveForm} saving={saving} isEdit={!!form.id} />
+      )}
+      {modal && modal.mode === 'detail' && (
+        <DetailSheet item={modal.item} endDate={endDateOf(modal.item)}
+          onClose={() => setModal(null)} onEdit={() => openEdit(modal.item)} onDelete={() => deleteItem(modal.item.id)} />
+      )}
+    </div>
+  );
+}
+
+function FormSheet({ form, setForm, onCancel, onSave, saving, isEdit }) {
+  const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
+  const [ocrLoading, setOcrLoading] = useState(false);
+  const [ocrMsg, setOcrMsg] = useState('');
+  const [contactMsg, setContactMsg] = useState('');
+
+  function handleSellerSearch() {
+    if (!form.vendeur.trim()) return;
+    setContactMsg('');
+    const entry = findInDirectory(form.vendeur);
+    if (entry) {
+      setForm(f => ({ ...f, autreContact: f.autreContact || entry.site, paysVendeur: f.paysVendeur || entry.pays }));
+      setContactMsg(`Site officiel trouvé dans l'annuaire intégré (${entry.nom}) : le téléphone et l'email restent à récupérer sur ce site ou ton espace client, l'annuaire ne les stocke pas.`);
+    } else {
+      setContactMsg("Cette enseigne ne fait pas partie de l'annuaire intégré (limité aux enseignes les plus courantes) : renseigne les coordonnées manuellement.");
+    }
+  }
+
+  function addProduit() {
+    const row = { id: Date.now() + '-' + Math.random().toString(36).slice(2,5), nom: '' };
+    set('produits', [...(form.produits || []), row]);
+  }
+  function updateProduit(id, value) {
+    set('produits', (form.produits || []).map(r => r.id === id ? { ...r, nom: value } : r));
+  }
+  function removeProduit(id) {
+    const rest = (form.produits || []).filter(r => r.id !== id);
+    set('produits', rest.length ? rest : [{ id: Date.now() + '-x', nom: '' }]);
+  }
+
+  function addIntervention() {
+    const row = { id: Date.now() + '-' + Math.random().toString(36).slice(2,5), date: '', probleme: '', resultat: '' };
+    set('interventions', [...(form.interventions || []), row]);
+  }
+  function updateIntervention(id, field, value) {
+    set('interventions', (form.interventions || []).map(r => r.id === id ? { ...r, [field]: value } : r));
+  }
+  function removeIntervention(id) {
+    set('interventions', (form.interventions || []).filter(r => r.id !== id));
+  }
+
+  async function runOcr(dataUrl, factureType) {
+    setOcrLoading(true);
+    setOcrMsg('');
+    const result = await analyzeInvoice(dataUrl, factureType);
+    setOcrLoading(false);
+    if (result && (result.dateAchat || result.vendeur || result.numeroFacture)) {
+      setForm(f => ({
+        ...f,
+        vendeur: f.vendeur || result.vendeur || f.vendeur,
+        paysVendeur: (!f.vendeur && result.paysVendeur) ? result.paysVendeur : f.paysVendeur,
+        dateAchat: f.dateAchat || result.dateAchat || f.dateAchat,
+        numeroFacture: f.numeroFacture || result.numeroFacture || f.numeroFacture,
+      }));
+      setOcrMsg("Date, n° de facture et/ou enseigne reconnue détectés (lecture gratuite, dans ton navigateur) — vérifie avant d'enregistrer. Les produits ne sont jamais devinés automatiquement : à saisir toi-même.");
+    } else if (result) {
+      setOcrMsg("Texte lu mais aucune date, n° de facture ni enseigne connue détectée : complète les champs manuellement.");
+    } else {
+      setOcrMsg(factureType === 'pdf'
+        ? "Aucun texte trouvé dans ce PDF (probablement un scan sans texte sélectionnable) : complète les champs manuellement."
+        : "Lecture automatique impossible sur cette image : complète les champs manuellement.");
+    }
+  }
+
+  function handleFile(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const isPdf = file.type === 'application/pdf';
+    if (isPdf && file.size > 4 * 1024 * 1024) {
+      setOcrMsg('Ce PDF dépasse 4 Mo : il risque de ne pas pouvoir être sauvegardé dans le navigateur. Préfère une version plus légère si possible.');
+    }
+    if (isPdf) {
+      readPdf(file, (dataUrl) => {
+        set('factureImg', dataUrl);
+        set('factureType', 'pdf');
+        runOcr(dataUrl, 'pdf');
+      });
+    } else {
+      compressImage(file, (dataUrl) => {
+        set('factureImg', dataUrl);
+        set('factureType', 'image');
+        runOcr(dataUrl, 'image');
+      });
+    }
+  }
+
+  return (
+    <div className="overlay" onClick={(e) => { if (e.target === e.currentTarget) onCancel(); }}>
+      <div className="sheet">
+        <h2>{isEdit ? 'Modifier le produit' : 'Nouveau produit'}</h2>
+
+        <div className="section-label" style={{marginTop:0}}>Facture</div>
+        <div className="invoice-zone">
+          {form.factureImg && form.factureType === 'pdf' && (
+            <div style={{marginBottom: 10}}>📄 <button type="button" className="btn-text" style={{padding:0}} onClick={() => openInvoicePdf(form.factureImg)}>Facture PDF importée — ouvrir</button></div>
+          )}
+          {form.factureImg && form.factureType !== 'pdf' && <img src={form.factureImg} className="invoice-preview" alt="Facture" />}
+          <label className="file-label">
+            {form.factureImg ? 'Remplacer le justificatif' : 'Importer la facture (photo ou PDF)'}
+            <input type="file" accept="image/*,application/pdf" onChange={handleFile} />
+          </label>
+          {ocrLoading && <div className="ocr-status">Lecture de la facture…</div>}
+          {!ocrLoading && ocrMsg && <div className="ocr-banner">{ocrMsg}</div>}
+        </div>
+        <label>N° de facture ou de commande</label>
+        <input type="text" value={form.numeroFacture} onChange={e => set('numeroFacture', e.target.value)} placeholder="Ex. F-2026-00312" />
+        <label>Référence facture ou note complémentaire (si pas de photo, ou en plus)</label>
+        <input type="text" value={form.factureRef} onChange={e => set('factureRef', e.target.value)} placeholder="Ex. dans le classeur bleu" />
+
+        <div className="section-label">Produit(s) concerné(s)</div>
+        {(form.produits || []).map((row, idx) => (
+          <div key={row.id} style={{display: 'flex', gap: 8, marginBottom: 8, alignItems: 'center'}}>
+            <input type="text" value={row.nom} onChange={e => updateProduit(row.id, e.target.value)} placeholder={idx === 0 ? 'Ex. Lave-linge Bosch' : 'Ex. Sèche-linge Bosch (même achat)'} style={{flex: 1}} />
+            {(form.produits || []).length > 1 && (
+              <button type="button" className="btn-danger-text" style={{margin: 0, whiteSpace: 'nowrap'}} onClick={() => removeProduit(row.id)}>Retirer</button>
+            )}
+          </div>
+        ))}
+        <button type="button" className="btn-text" onClick={addProduit}>+ Ajouter un autre produit de cette même facture</button>
+
+        <label>Vendeur / magasin</label>
+        <input type="text" value={form.vendeur} onChange={e => set('vendeur', e.target.value)} placeholder="Ex. Boulanger Thionville" />
+
+        <label>Pays du vendeur</label>
+        <input type="text" value={form.paysVendeur} onChange={e => set('paysVendeur', e.target.value)} placeholder="Ex. France" />
+
+        <label>Date d'achat</label>
+        <input type="date" value={form.dateAchat} onChange={e => set('dateAchat', e.target.value)} />
+
+        <label>Durée de garantie initiale (mois)</label>
+        <input type="number" value={form.dureeGarantie} onChange={e => set('dureeGarantie', e.target.value)} />
+        <div className="presets">
+          {[12, 24, 36].map(m => (
+            <button key={m} type="button" className={`preset-btn ${String(form.dureeGarantie) === String(m) ? 'active' : ''}`} onClick={() => set('dureeGarantie', String(m))}>{m} mois</button>
+          ))}
+        </div>
+
+        <label>Extension de garantie</label>
+        <div className="toggle-group">
+          <button type="button" className={`toggle-btn ${form.extensionType === 'non' ? 'active-no' : ''}`} onClick={() => set('extensionType', 'non')}>Aucune</button>
+          <button type="button" className={`toggle-btn ${form.extensionType === 'vendeur' ? 'active-yes' : ''}`} onClick={() => set('extensionType', 'vendeur')}>Vendeur</button>
+          <button type="button" className={`toggle-btn ${form.extensionType === 'tiers' ? 'active-yes' : ''}`} onClick={() => set('extensionType', 'tiers')}>Organisme tiers</button>
+        </div>
+
+        {form.extensionType !== 'non' && (
+          <div>
+            <label>Durée totale de couverture avec l'extension (mois)</label>
+            <input type="number" value={form.extensionDureeMois} onChange={e => set('extensionDureeMois', e.target.value)} placeholder="Ex. 60" />
+          </div>
+        )}
+
+        {form.extensionType === 'tiers' && (
+          <div>
+            <label>Nom de l'organisme (ex. Cdiscount à volonté, Darty Max, Assurant…)</label>
+            <input type="text" value={form.extensionOrganisme} onChange={e => set('extensionOrganisme', e.target.value)} placeholder="Ex. Cdiscount à volonté" />
+            <div className="info-box neutral"><strong>Contact spécifique</strong> — l'organisme tiers gère la garantie indépendamment du vendeur. Renseigne ses coordonnées ci-dessous.</div>
+            <label>Téléphone de l'organisme</label>
+            <input type="tel" value={form.extensionTel} onChange={e => set('extensionTel', e.target.value)} />
+            <label>Email de l'organisme</label>
+            <input type="email" value={form.extensionEmail} onChange={e => set('extensionEmail', e.target.value)} />
+            <label>Autre (site, espace client, n° de contrat…)</label>
+            <input type="text" value={form.extensionAutre} onChange={e => set('extensionAutre', e.target.value)} />
+          </div>
+        )}
+
+        {form.extensionType === 'non' && (
+          <div className="info-box">
+            <strong>Pas d'extension ?</strong> Deux protections légales s'appliquent quand même en France, sans frais :
+            la <strong>garantie légale de conformité</strong> (2 ans à partir de l'achat, le vendeur doit réparer ou remplacer)
+            et la <strong>garantie des vices cachés</strong> (défaut non visible à l'achat, invocable jusqu'à 2 ans après sa découverte,
+            même au-delà de la garantie commerciale).
+          </div>
+        )}
+
+        <div className="section-label">Contact vendeur pour la garantie</div>
+        <button type="button" className="btn btn-ghost" onClick={handleSellerSearch} disabled={!form.vendeur.trim()} style={{marginBottom: 10}}>
+          Chercher dans l'annuaire intégré (gratuit)
+        </button>
+        {contactMsg && <div className="ocr-banner" style={{marginTop: 0, marginBottom: 10}}>{contactMsg}</div>}
+        <label>Téléphone</label>
+        <input type="tel" value={form.tel} onChange={e => set('tel', e.target.value)} placeholder="Ex. 03 87 XX XX XX" />
+        <label>Email</label>
+        <input type="email" value={form.email} onChange={e => set('email', e.target.value)} placeholder="sav@vendeur.fr" />
+        <label>Autre (site web, adresse magasin, chat SAV...)</label>
+        <input type="text" value={form.autreContact} onChange={e => set('autreContact', e.target.value)} placeholder="Ex. www.vendeur.fr/sav ou 12 rue du Commerce, Thionville" />
+
+        <div className="section-label">Garantie déjà mise en œuvre</div>
+        {(form.interventions || []).map(row => (
+          <div key={row.id} style={{border: '1px solid var(--paper-line)', borderRadius: 4, padding: 10, marginBottom: 8, background: 'var(--card)'}}>
+            <div className="row2">
+              <div>
+                <label style={{marginTop: 0}}>Date</label>
+                <input type="date" value={row.date} onChange={e => updateIntervention(row.id, 'date', e.target.value)} />
+              </div>
+            </div>
+            <label>Problème rencontré</label>
+            <input type="text" value={row.probleme} onChange={e => updateIntervention(row.id, 'probleme', e.target.value)} placeholder="Ex. Écran ne s'allume plus" />
+            <label>Issue</label>
+            <input type="text" value={row.resultat} onChange={e => updateIntervention(row.id, 'resultat', e.target.value)} placeholder="Ex. Réparé sous 5 jours, ou Remboursé, ou Refusé..." />
+            <button type="button" className="btn-danger-text" style={{marginTop: 6}} onClick={() => removeIntervention(row.id)}>Retirer cet incident</button>
+          </div>
+        ))}
+        <button type="button" className="btn-text" onClick={addIntervention}>+ Ajouter un incident déjà traité</button>
+
+        <label>Notes</label>
+        <textarea value={form.notes} onChange={e => set('notes', e.target.value)} placeholder="Numéro de série, conditions particulières..."></textarea>
+
+        <div className="sheet-actions">
+          <button className="btn btn-ghost" onClick={onCancel}>Annuler</button>
+          <button className="btn btn-primary" onClick={onSave} disabled={saving}>{saving ? 'Enregistrement…' : 'Enregistrer'}</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function DetailSheet({ item, endDate, onClose, onEdit, onDelete }) {
+  const st = statusOf(endDate);
+  const hasExtension = item.extensionType && item.extensionType !== 'non';
+  const produitsList = (item.produits || []).filter(p => p.nom.trim());
+  const titre = produitsList[0]?.nom || '(sans nom)';
+  return (
+    <div className="overlay" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
+      <div className="sheet">
+        <h2>{titre}{produitsList.length > 1 ? ` + ${produitsList.length - 1} autre${produitsList.length > 2 ? 's' : ''}` : ''}</h2>
+        <span className={`status-pill status-${st === 'ok' ? 'ok' : st === 'soon' ? 'soon' : 'expired'}`}>{statusLabel(endDate)}</span>
+
+        {produitsList.length > 1 && (
+          <div style={{marginTop: 12}}>
+            <div className="section-label" style={{marginTop: 0}}>Produits de cette facture</div>
+            <ul style={{margin: 0, paddingLeft: 20, fontSize: 14.5}}>
+              {produitsList.map(p => <li key={p.id}>{p.nom}</li>)}
+            </ul>
+          </div>
+        )}
+
+        <div style={{marginTop: 16}}>
+          <div className="detail-row"><span className="k">Vendeur</span><span className="v">{item.vendeur || '—'}</span></div>
+          {item.numeroFacture && <div className="detail-row"><span className="k">N° de facture</span><span className="v">{item.numeroFacture}</span></div>}
+          <div className="detail-row"><span className="k">Date d'achat</span><span className="v">{fmtDate(item.dateAchat)}</span></div>
+          <div className="detail-row"><span className="k">Garantie initiale</span><span className="v">{item.dureeGarantie} mois</span></div>
+          <div className="detail-row"><span className="k">Extension</span><span className="v">
+            {item.extensionType === 'tiers' ? `Tiers — ${item.extensionOrganisme || 'non précisé'}` : item.extensionType === 'vendeur' ? 'Souscrite auprès du vendeur' : 'Aucune'}
+          </span></div>
+          {hasExtension && <div className="detail-row"><span className="k">Durée totale avec extension</span><span className="v">{item.extensionDureeMois} mois</span></div>}
+          <div className="detail-row"><span className="k">Couverture jusqu'au</span><span className="v">{fmtDate(endDate)}</span></div>
+        </div>
+
+        {!hasExtension && (
+          <div className="info-box">
+            <strong>Sans extension</strong> — garantie légale de conformité (2 ans) et garantie des vices cachés
+            restent invocables auprès du vendeur même après la fin de la garantie commerciale.
+          </div>
+        )}
+
+        <div className="section-label">Facture</div>
+        {item.factureImg && item.factureType === 'pdf' && (
+          <div className="contact-line">📄 <button type="button" className="btn-text" style={{padding:0}} onClick={() => openInvoicePdf(item.factureImg)}>Ouvrir la facture (PDF)</button></div>
+        )}
+        {item.factureImg && item.factureType !== 'pdf' && <img src={item.factureImg} className="invoice-preview" alt="Facture" />}
+        {!item.factureImg && (
+          <div className="detail-row"><span className="k">Référence</span><span className="v">{item.factureRef || 'Non renseignée'}</span></div>
+        )}
+
+        <div className="section-label">Contacter le vendeur</div>
+        {item.tel && <div className="contact-line">📞 <a href={`tel:${item.tel.replace(/\s/g,'')}`}>{item.tel}</a></div>}
+        {item.email && <div className="contact-line">✉️ <a href={`mailto:${item.email}`}>{item.email}</a></div>}
+        {item.autreContact && <div className="contact-line">🔗 <span>{item.autreContact}</span></div>}
+        {!item.tel && !item.email && !item.autreContact && <div className="contact-line" style={{color:'var(--muted)'}}>Aucun contact renseigné</div>}
+
+        {item.extensionType === 'tiers' && (item.extensionTel || item.extensionEmail || item.extensionAutre) && (
+          <div>
+            <div className="section-label">Contacter {item.extensionOrganisme || "l'organisme d'extension"}</div>
+            {item.extensionTel && <div className="contact-line">📞 <a href={`tel:${item.extensionTel.replace(/\s/g,'')}`}>{item.extensionTel}</a></div>}
+            {item.extensionEmail && <div className="contact-line">✉️ <a href={`mailto:${item.extensionEmail}`}>{item.extensionEmail}</a></div>}
+            {item.extensionAutre && <div className="contact-line">🔗 <span>{item.extensionAutre}</span></div>}
+          </div>
+        )}
+
+        {(item.interventions || []).length > 0 && (
+          <div>
+            <div className="section-label">Garantie déjà mise en œuvre</div>
+            {[...item.interventions].sort((a,b) => (b.date||'').localeCompare(a.date||'')).map(row => (
+              <div key={row.id} style={{borderBottom: '1px solid var(--paper-line)', padding: '10px 0'}}>
+                <div style={{fontWeight: 600, fontSize: 14}}>{fmtDate(row.date)}</div>
+                <div style={{fontSize: 14, marginTop: 2}}>{row.probleme}</div>
+                {row.resultat && <div style={{fontSize: 13.5, color: 'var(--muted)', marginTop: 2}}>Issue : {row.resultat}</div>}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {item.notes && (<div><div className="section-label">Notes</div><div style={{fontSize: 14.5, lineHeight: 1.5}}>{item.notes}</div></div>)}
+
+        <div className="sheet-actions">
+          <button className="btn btn-ghost" onClick={onClose}>Fermer</button>
+          <button className="btn btn-primary" onClick={onEdit}>Modifier</button>
+        </div>
+        <button className="btn-danger-text" onClick={onDelete} style={{marginTop: 10}}>Supprimer ce produit</button>
+      </div>
+    </div>
+  );
+}
+
+function Manuel() {
+  return (
+    <div className="manual">
+      <h3>À quoi sert cette application</h3>
+      <p>Garanties centralise, pour chaque produit acheté, sa facture, sa durée de garantie, une éventuelle extension et les coordonnées à utiliser en cas de problème — pour éviter de fouiller des tiroirs ou des boîtes mail le jour où un appareil tombe en panne. L'application est entièrement gratuite : aucune fonctionnalité ne nécessite de compte, de clé, ni d'abonnement.</p>
+      <p>Le petit numéro affiché sous le titre "Garanties" en haut de l'application (<strong>Version ...</strong>) permet de vérifier, après une mise à jour du fichier sur GitHub, que le navigateur a bien chargé la nouvelle version et non une copie mise en cache. S'il ne correspond pas à la version attendue, vide le cache du site ou ouvre le lien dans une fenêtre de navigation privée.</p>
+
+      <h3>Mettre l'application sur l'écran d'accueil de l'iPhone</h3>
+      <p>Une fois l'application ouverte depuis son adresse GitHub Pages, <strong>dans Safari</strong> :</p>
+      <ol style={{paddingLeft: 20, fontSize: 14.5, lineHeight: 1.6}}>
+        <li>Appuie sur l'icône de <strong>partage</strong> (le carré avec une flèche vers le haut, en bas de l'écran).</li>
+        <li>Fais défiler le menu et choisis <strong>Sur l'écran d'accueil</strong> (si tu ne le vois pas, appuie d'abord sur <strong>Plus</strong> ou fais défiler vers le bas).</li>
+        <li>Vérifie le nom proposé (« Garanties ») et appuie sur <strong>Ajouter</strong>.</li>
+      </ol>
+      <p>L'icône « Garanties » apparaît alors sur l'écran d'accueil et l'application s'ouvre en plein écran, comme une application ordinaire, sans la barre d'adresse de Safari.</p>
+      <p><strong>Important :</strong> l'application installée sur l'écran d'accueil dispose de son propre espace de stockage, séparé de celui de Safari. Les produits déjà saisis dans Safari ne s'y retrouvent donc pas : il faudra les ressaisir dans l'application de l'écran d'accueil. Le mieux est donc d'installer l'icône <strong>avant</strong> de saisir beaucoup de produits, puis de n'utiliser que cette icône.</p>
+
+      <h3>Ajouter un produit ou une facture avec plusieurs produits</h3>
+      <p>Bouton <strong>+ Ajouter un produit</strong>. Commence par importer le justificatif si tu l'as sous la main — <strong>photo ou PDF</strong> — : l'application tente de lire automatiquement la <strong>date d'achat</strong>, un éventuel <strong>numéro de facture</strong>, et le <strong>nom du vendeur</strong> uniquement s'il correspond à une enseigne de l'annuaire intégré (voir plus bas). Cette lecture se fait entièrement dans le navigateur, gratuitement, sans envoyer le document où que ce soit. Les <strong>produits ne sont jamais devinés automatiquement</strong> : les tentatives testées donnaient des résultats trop peu fiables, il vaut mieux les saisir toi-même que de corriger des suggestions erronées.</p>
+      <p>Une même facture peut contenir <strong>plusieurs produits</strong> : le bouton <strong>+ Ajouter un autre produit de cette même facture</strong> ajoute une ligne supplémentaire (utile par exemple pour un lave-linge et un sèche-linge achetés ensemble). Tous les produits d'une même fiche partagent la même date d'achat, la même durée de garantie et la même extension — si deux produits d'une même commande ont des garanties différentes, crée deux fiches séparées plutôt qu'une seule.</p>
+      <p>Même limité à la date, au numéro de facture et à l'enseigne, ce repérage automatique reste une reconnaissance de motifs de texte, pas une lecture intelligente du document : il peut se tromper ou ne rien trouver, notamment sur une photo de mauvaise qualité ou un PDF scanné sans texte sélectionnable (les PDF générés numériquement, avec du texte sélectionnable, donnent de bien meilleurs résultats qu'une photo). Vérifie toujours les champs proposés avant d'enregistrer. Un PDF de plus de 4 Mo peut aussi ne pas se sauvegarder correctement dans le navigateur.</p>
+
+      <h3>Modifier un produit enregistré</h3>
+      <p>Chaque produit de la liste (onglets <strong>Actifs</strong> et <strong>Archivés</strong>, ou résultats de recherche) comporte un lien <strong>Modifier</strong> en bas à droite de sa carte : il ouvre directement le formulaire pré-rempli, pour corriger n'importe quelle information (produits, dates, extension, contacts, incidents, notes, facture…). Le bouton <strong>Modifier</strong> reste aussi disponible en bas de la fiche détaillée. N'oublie pas d'appuyer sur <strong>Enregistrer</strong> pour valider les changements.</p>
+
+      <h3>Extension de garantie</h3>
+      <p>Trois cas possibles :</p>
+      <ul>
+        <li><strong>Aucune</strong> — seule la garantie initiale s'applique. L'app rappelle que la garantie légale de conformité (2 ans) et la garantie des vices cachés restent mobilisables auprès du vendeur, même sans extension.</li>
+        <li><strong>Vendeur</strong> — l'extension a été prise chez le vendeur au moment de l'achat ; les coordonnées du vendeur servent aussi pour l'extension.</li>
+        <li><strong>Organisme tiers</strong> — l'extension a été souscrite ailleurs (ex. Cdiscount à volonté, Darty Max, un assureur). Un bloc de contact séparé permet de renseigner les coordonnées propres à cet organisme, différentes de celles du vendeur.</li>
+      </ul>
+
+      <h3>Annuaire intégré des enseignes courantes</h3>
+      <p>Une fois le nom du vendeur renseigné, le bouton <strong>Chercher dans l'annuaire intégré</strong> vérifie s'il correspond à l'une des enseignes les plus courantes (Amazon, Cdiscount, Fnac, Darty, Boulanger, Leroy Merlin, Ikea, et une vingtaine d'autres) et, si oui, propose son site officiel dans le champ de contact. Cette recherche est gratuite, instantanée et fonctionne hors connexion une fois l'application chargée — mais elle ne connaît qu'une sélection limitée d'enseignes, et ne fournit qu'un site (à toi de retrouver le téléphone ou l'email exact depuis ce site ou ton espace client, ces informations changeant trop souvent pour être stockées de façon fiable dans l'application). Pour toute enseigne non répertoriée, les coordonnées sont à renseigner entièrement à la main, comme avant.</p>
+
+      <h3>Garantie déjà mise en œuvre</h3>
+      <p>Sur la fiche d'un produit, la section <strong>Garantie déjà mise en œuvre</strong> permet d'ajouter un historique d'incidents : la date, le problème rencontré et l'issue (réparé, remplacé, remboursé, refusé, en cours...). Utile pour se souvenir de ce qui a déjà été fait avant de recontacter le vendeur. Ces entrées sont aussi prises en compte par la recherche par mot-clé.</p>
+
+      <h3>Recherche</h3>
+      <p>La barre de recherche filtre par mot-clé (nom du produit, vendeur, notes, organisme d'extension, historique d'incidents) et peut se combiner à un filtre par mois et/ou année d'achat. Dès qu'une recherche est active, les résultats affichés mélangent produits actifs et archivés.</p>
+
+      <h3>Archives</h3>
+      <p>Un produit dont la date de fin de garantie est dépassée bascule automatiquement dans l'onglet <strong>Archivés</strong>. Il reste consultable, modifiable et trouvable par la recherche — rien n'est supprimé ni caché, seulement rangé à part. Depuis cet onglet (ou depuis la recherche), un bouton <strong>Supprimer</strong> apparaît directement sur chaque produit archivé pour l'effacer définitivement — utile pour un produit que tu ne possèdes plus ou qui est cassé. La suppression est aussi disponible depuis la fiche détaillée, quel que soit le statut du produit.</p>
+
+      <h3>Où sont stockées les données</h3>
+      <p>Toutes les informations (y compris les photos de facture) sont enregistrées uniquement dans le navigateur utilisé (stockage local). Rien n'est envoyé sur un serveur. Changer de navigateur ou d'appareil — ou passer de Safari à l'icône de l'écran d'accueil — signifie repartir avec une liste vide sur ce nouvel accès.</p>
+
+      <h3>Fonctions automatiques : ce qu'il faut savoir</h3>
+      <p>La lecture de facture et l'annuaire des enseignes tournent entièrement dans le navigateur, sans compte, sans clé et sans coût — y compris une fois l'application hébergée sur GitHub Pages. Leur contrepartie est un résultat plus modeste qu'un service payant basé sur l'intelligence artificielle : seules la date d'achat et, si l'enseigne est reconnue, son nom peuvent être détectés depuis une facture ; le nom du produit et les coordonnées précises (téléphone, email) restent toujours à saisir à la main.</p>
+
+      <h3>Créer un compte GitHub</h3>
+      <p>GitHub est gratuit pour ce type d'usage. Si tu n'as pas encore de compte :</p>
+      <ul>
+        <li>Va sur <code>github.com</code> et clique sur <strong>Sign up</strong> (S'inscrire).</li>
+        <li>Renseigne une adresse email, un mot de passe et un nom d'utilisateur, puis valide les étapes de vérification proposées.</li>
+        <li>Confirme ton adresse email via le lien reçu par mail — ton compte est alors actif.</li>
+      </ul>
+
+      <h3>Déposer l'application sur GitHub — pas à pas</h3>
+      <p>Avant de commencer, récupère le fichier <code>index.html</code> partagé dans la conversation Claude : appuie dessus, puis <strong>Télécharger</strong> (ou l'icône de partage → <strong>Enregistrer dans Fichiers</strong> sur iPhone). Il se trouve ensuite dans l'app <strong>Fichiers</strong>, généralement dans <strong>Téléchargements</strong> — exactement comme la facture que tu avais retrouvée plus tôt via Fichiers.</p>
+      <ol style={{paddingLeft: 20, fontSize: 14.5, lineHeight: 1.6}}>
+        <li>Connecte-toi sur <code>github.com</code> (en haut à droite : <strong>Sign in</strong>, ou tu es déjà connecté si tu as créé ton compte juste avant).</li>
+        <li>En haut de l'écran, appuie sur le <strong>+</strong> (à côté de ta photo de profil), puis choisis <strong>New repository</strong> dans le menu qui s'ouvre.</li>
+        <li>Dans le champ <strong>Repository name</strong>, tape un nom sans espace, par exemple <code>garanties</code>.</li>
+        <li>Laisse l'option <strong>Public</strong> cochée (pas Private) — c'est nécessaire pour que le lien final soit accessible gratuitement.</li>
+        <li>Ne coche aucune case supplémentaire (pas de README, pas de .gitignore) pour rester simple. Descends en bas de la page et appuie sur le bouton vert <strong>Create repository</strong>.</li>
+        <li>Tu arrives sur la page (vide) de ton nouveau dépôt. Repère le lien bleu <strong>uploading an existing file</strong> au milieu de la page (ou le bouton <strong>Add file</strong> en haut à droite → <strong>Upload files</strong> si tu ne le vois pas).</li>
+        <li>Une zone d'import s'ouvre. Appuie dessus (ou fais glisser le fichier depuis un ordinateur) pour choisir <code>index.html</code> depuis l'app Fichiers de ton téléphone — le même écran de sélection que tu as déjà utilisé pour la facture.</li>
+        <li>Attends que la ligne <code>index.html</code> apparaisse avec une coche verte, confirmant que le fichier est bien pris en compte.</li>
+        <li>Descends tout en bas de la page, jusqu'au bloc <strong>Commit changes</strong>. Le message par défaut convient (par ex. « Add index.html »).</li>
+        <li>Appuie sur le bouton vert <strong>Commit changes</strong> pour valider l'envoi. Tu es redirigé vers la page du dépôt, qui affiche maintenant le fichier <code>index.html</code> dans la liste.</li>
+      </ol>
+      <p>Le dépôt existe désormais avec ton fichier dedans — il reste à activer GitHub Pages (étape suivante) pour obtenir un lien utilisable.</p>
+
+      <h3>Activer GitHub Pages</h3>
+      <ol style={{paddingLeft: 20, fontSize: 14.5, lineHeight: 1.6}}>
+        <li>Toujours sur la page du dépôt, appuie sur l'onglet <strong>Settings</strong> (dans la barre d'onglets en haut : Code, Issues, Pull requests… Settings est le dernier, tout à droite ; sur petit écran il peut être caché sous une icône ☰ ou « … »).</li>
+        <li>Dans le menu de gauche de la page Settings, fais défiler jusqu'à <strong>Pages</strong> et appuie dessus.</li>
+        <li>Sous <strong>Build and deployment</strong>, dans le menu déroulant <strong>Source</strong>, vérifie que <strong>Deploy from a branch</strong> est sélectionné.</li>
+        <li>Juste en dessous, sous <strong>Branch</strong>, choisis <code>main</code> dans le premier menu déroulant et <code>/ (root)</code> dans le second, puis appuie sur <strong>Save</strong>.</li>
+        <li>Patiente une à deux minutes, puis recharge la page (tire vers le bas ou actualise). Un encadré vert apparaît en haut avec l'adresse de ton site, du type <code>https://&lt;ton-nom-utilisateur&gt;.github.io/garanties/</code>.</li>
+        <li>Appuie sur ce lien (ou copie-le) pour ouvrir l'application dans ton navigateur — puis ajoute-la à l'écran d'accueil comme expliqué plus haut.</li>
+      </ol>
+      <p>Toute modification ultérieure (nouvelle version du fichier) reprend les étapes 6 à 10 ci-dessus : <strong>Add file → Upload files</strong> pour remplacer <code>index.html</code>, puis <strong>Commit changes</strong>. GitHub Pages se met à jour automatiquement après quelques instants, sans repasser par les réglages de Pages.</p>
+
+
+      <h3>Partage et hébergement — résumé technique</h3>
+      <p>Cette application est un unique fichier <code>index.html</code> autonome (pas de serveur, pas d'installation). Pour la partager via GitHub :</p>
+      <ul>
+        <li>Crée un dépôt et ajoute ce fichier en le nommant <code>index.html</code>.</li>
+        <li>Dans les paramètres du dépôt, active <strong>GitHub Pages</strong> sur la branche principale.</li>
+        <li>L'application sera accessible à l'adresse fournie par GitHub Pages, utilisable par toute personne ayant le lien.</li>
+      </ul>
+      <p>Chaque visiteur a ses propres données, stockées uniquement dans son navigateur : rien n'est partagé entre les personnes qui utilisent le même lien.</p>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('app')).render(<App />);
+</script>
+</body>
+</html>
